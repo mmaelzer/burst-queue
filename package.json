@@ -1,0 +1,28 @@
+{
+  "author": "Mike Maelzer <mmaelzer@gmail.com>",
+  "name": "burst-queue",
+  "description": "a queue that executes callbacks in predefined bursts",
+  "version": "0.1.0",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/mmaelzer/burst-queue.git"
+  },
+  "main": "./lib/burst-queue.js",
+  "engines": {
+    "node": ">=0.6.0"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "mocha": "*",
+    "should": "*",
+    "coffee-script": ">=1.2"
+  },
+  "scripts": {
+    "build": "cake build",
+    "test": "cake test"
+  },
+  "optionalDependencies": {},
+  "engines": {
+    "node": "*"
+  }
+}
