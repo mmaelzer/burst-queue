@@ -1,3 +1,4 @@
+[![build status](https://secure.travis-ci.org/mmaelzer/burst-queue.png)](http://travis-ci.org/mmaelzer/burst-queue)
 burst-queue
 ===========
 A simple queue that takes functions and executes those functions on a specified interval. Optionally a maximum number of functions to execute per interval can be specified when creating a burst-queue.
