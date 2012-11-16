@@ -1,16 +1,11 @@
 
 class BurstQueue
 	_queue = new Array()
-	_counter = 0
 	_maxItems = 0
-	_availableCalls = 0
 
 	constructor: (period, itemsPerPeriod) ->
-		if itemsPerPeriod?
-			_availableCalls = _maxItems = itemsPerPeriod
-		else
-			_availableCalls = _maxItems
-
+		@counter = 0
+		@availableCalls = _maxItems = if itemsPerPeriod? then itemsPerPeriod else _maxItems
 		setInterval @process, period
 
 	add: (functions) ->
@@ -18,49 +13,41 @@ class BurstQueue
 		if Object.prototype.toString.apply(functions) == '[object Array]'
 			ids = new Array()
 			for fn in functions
-				if _availableCalls > 0
-					_availableCalls--
+				if @availableCalls > 0
+					@availableCalls--
 					fn()
 				else 
-					_queue.push { id : _counter, fn: fn }
-				ids.push _counter++
+					_queue.push { id : @counter, fn: fn }
+				ids.push @counter++
 			ids
 		else
-			if _availableCalls > 0
-				_availableCalls--
+			if @availableCalls > 0
+				@availableCalls--
 				functions()
 			else
-				_queue.push { id : _counter, fn: functions }
-			_counter++
-
-	availableCalls: ->
-		_availableCalls
+				_queue.push { id : @counter, fn: functions }
+			@counter++
 
 	clear: ->
 		_queue.length = 0	
-		_availableCalls = _maxItems
 		return
-
-	counter: ->
-		_counter
 
 	enqueued: ->
 		_queue.length
 
 	process: ->
 		if _queue.length < 1
-			_availableCalls = _maxItems
+			@availableCalls = _maxItems
 			return
 
 		for index in [0..(_queue.length - 1)]
 			_queue[index].fn()
-			if (index + 1) >= _maxItems
-				break
+			if (index + 1) >= _maxItems then break
 
 		_queue.splice 0, index + 1
 
 		if index < _maxItems
-			_availableCalls = _maxItems - (index + 1)
+			@availableCalls = _maxItems - (index + 1)
 
 	remove: (id) ->
 		if _queue.length < 1
@@ -71,14 +58,8 @@ class BurstQueue
 			if _queue[index].id == id
 				success = true
 				break
-		if success
-			_queue.splice index, 1
+		if success then	_queue.splice(index, 1)
 		return success
 
 
-exports = module.exports
-
-exports.createQueue = (period, functionsPerPeriod) ->
-	new BurstQueue period, functionsPerPeriod
-
-
+module.exports = BurstQueue

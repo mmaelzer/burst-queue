@@ -1,11 +1,11 @@
-## burst-queue test
+## burst-queue tests
 should = require 'should'
 
 BurstQueue = require '../src/burst-queue'
 
 describe 'burst-queue', ->
 
-	queue = BurstQueue.createQueue 500, 1
+	queue = new BurstQueue 500, 1
 
 	beforeEach (done) ->
 		queue.clear()
@@ -13,7 +13,7 @@ describe 'burst-queue', ->
 
 	describe '#add()', ->
 		it 'should return an incrementing id', (done) ->
-			counter = queue.counter()
+			counter = queue.counter
 			test1 = ->
 				foo = "bar"
 			(queue.add test1).should.equal counter
@@ -22,7 +22,7 @@ describe 'burst-queue', ->
 			(queue.add test2).should.equal(counter + 1)
 			done()
 		it 'should accept arrays of functions and return arrays of ids', (done) ->
-			counter = queue.counter()
+			counter = queue.counter
 			test1 = ->
 				foo = "bar"
 			test2 = ->
@@ -87,7 +87,7 @@ describe 'burst-queue', ->
 		queue.add [test1, test2, test3]
 
 	it 'should execute functions immediately if queue is empty and max number of items per period is not reached', (done) ->
-		if queue.availableCalls() > 0
+		if queue.availableCalls > 0
 			start = new Date()
 			test = ->
 				if new Date() - start > 400
